@@ -12,6 +12,6 @@ class Post {
             this.timestamp = new Date(timestamp);
         }
 
-        console.log(this.fbkey, this.title, this.body, this.owner);
+        console.log(this.timestamp);
     }
 }

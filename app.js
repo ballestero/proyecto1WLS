@@ -53,6 +53,7 @@ function init() {
 
          for (var i = 0; i < posts.length; i++) {
             var newPost = new Post(i, posts[i].title, posts[i].body, posts[i].owner, posts[i].timestamp);
+            var newPostUI = new PostUI(newPost);
 }
 
        }
@@ -65,6 +66,7 @@ function init() {
        console.log('OKJJ');
 
       var newPost = new Post('1',titleTxt.value,bodyTxt.value,'Jeison');
+      var newPostUI = new PostUI(newPost);
         
      };
 }
