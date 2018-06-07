@@ -27,8 +27,9 @@ class PostUI {
         this.divCol1.className = 'col';
         this.divCol2.classList.add('col-2','btnPost');
         this.editBtn.classList.add('btnAction', 'editBtn');
-        this.editBtn.setAttribute("id", "updateBtn");
+        this.editBtn.id = this.post.fbkey;
         this.deleteBtn.classList.add('btnAction', 'deleteBtn');
+        this.deleteBtn.id = this.post.fbkey + 'delete';
 
 
         if(this.post !== null) {
@@ -36,9 +37,6 @@ class PostUI {
             this.bodyTxt.innerText = this.post.body;
            this.timesT.innerText = this.post.owner + '-' + this.post.timestamp.getDate() + '/' + this.post.timestamp.getMonth() + '/' + this.post.timestamp.getFullYear();
         }
-
-    
-
 
     }
 }

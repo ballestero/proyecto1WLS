@@ -11,7 +11,9 @@ function init() {
   var deleteBtn = document.getElementById('deleteBtn');
   var cancelBtn = document.getElementById('cancelBtn');
   var editBtn = document.getElementById('editBtn');
+  var postContainer = document.getElementById('postsContainer');
   var owner = 'Jeison';
+  var currentPostSelected = null;
 
   postBtn.hidden = false;
   updateBtn.hidden = true;
@@ -19,9 +21,12 @@ function init() {
 
   postBtn.onclick = postBtnOnClick;
   updateBtn.onclick = updateBtnOnClick;
-  //deleteBtn.onclick = deleteBtnOnClick;
-  //cancelBtn.onclick = cancelBtnOnClick;
+  cancelBtn.onclick = cancelBtnOnClick;
   //editBtn.onclick = editBtnOnClick;
+
+  postContainer.addEventListener('click', selectPost, false);
+
+
 
   var posts = [];
   var slectedPostUI = null;
@@ -32,33 +37,35 @@ function init() {
 
 
   var getPost = new XMLHttpRequest();
-   getPost.onreadystatechange = function() {
+  getPost.onreadystatechange = function () {
 
-     if (this.readyState == 4 && this.status == 200) {
+    if (this.readyState == 4 && this.status == 200) {
 
       var postsData = JSON.parse(getPost.responseText);
 
-        for (const key in postsData){
-          var postData = postsData[key];
-          var editable = false;
-          if (postData.owner === owner){
-            editable = true;
-          }
-
-          var newPost = new Post(key, postData.title, postData.body, postData.owner, postData.timestamp);
-          var newPostUI = new PostUI(newPost);
-          
+      for (const key in postsData) {
+        var postData = postsData[key];
+        var editable = false;
+        if (postData.owner === owner) {
+          editable = true;
         }
 
-     }
-   };
-   getPost.open("GET", urlBase, true);
-   getPost.send();
+        var newPost = new Post(key, postData.title, postData.body, postData.owner, postData.timestamp);
+        var newPostUI = new PostUI(newPost);
+        posts.push(newPost);
 
 
-   function requestAllPost(){
-     
-   }
+      }
+
+    }
+  };
+  getPost.open("GET", urlBase, true);
+  getPost.send();
+
+
+  function requestAllPost() {
+
+  }
 
   /*var getPost = new XMLHttpRequest();
   getPost.onreadystatechange = function () {
@@ -77,16 +84,16 @@ function init() {
   getPost.open("GET", "js/posts.json", true);
   getPost.send();*/
 
-  function sendPostCallback(event){
+  function sendPostCallback(event) {
     var request = event.target;
     if (request.readyState === XMLHttpRequest.DONE) {
       if (request.status === 200) {
         requestAllPost();
-        
+
       } else {
         console.log('Error on request: ', request.status)
       }
-      
+
     }
   }
 
@@ -94,7 +101,7 @@ function init() {
 
     if (titleTxt.value === '' || bodyTxt.value === '') {
       alert('Los datos del post no estan completos');
-      
+
     } else {
       var post = new Post(null, titleTxt.value, bodyTxt.value, owner, true);
       var request = new XMLHttpRequest();
@@ -106,12 +113,75 @@ function init() {
 
   };
 
-  
-  updateBtn = document.getElementById('updateBtn');
-  updateBtn.onclick = updateBtnOnClick;
 
-  function updateBtnOnClick(){
-    console.log('ok');
+  function editablePost(ppostInfo){
+    
+    postBtn.hidden = true;
+    updateBtn.hidden = false;
+    cancelBtn.hidden = false;
+
+    titleTxt.value= ppostInfo.title;
+    bodyTxt.value= ppostInfo.body;
+  }
+  function updateBtnOnClick() {
+
+    console.log('Post Editado');
+
+    postBtn.hidden = false;
+    updateBtn.hidden = true;
+    cancelBtn.hidden = true;
 
   };
+
+  function cancelBtnOnClick() {
+    console.log('Edicion Cancelada');
+
+    postBtn.hidden = false;
+    updateBtn.hidden = true;
+    cancelBtn.hidden = true;
+
+  };
+
+  function deleteBtnOnClick(ppostInfo){
+    console.log('Eliminado');
+    
+  }
+
+
+
+  function selectPost(event) {
+    currentPostSelected = getPostByFbKey(event.target);
+
+    if (currentPostSelected.fbkey === event.target.id) {
+      editablePost(currentPostSelected);
+    } else {
+      deleteBtnOnClick(currentPostSelected);
+    }
+
+    
+
+  };
+
+  function getPostByFbKey(target) {
+    var postSelected = null;
+
+    console.log(target.id);
+    
+
+    for (var i = 0; i < posts.length; i++) {
+      if (posts[i].fbkey === target.id) {
+        postSelected = posts[i];
+      }
+    }
+
+    if (postSelected === null && target.parentElement !== null) {
+      return (target.parentElement);
+    } else {
+      if (postSelected !== null) {
+        return postSelected;
+      } else {
+        return null;
+      }
+    }
+  }
 }
