@@ -51,9 +51,16 @@ h3{
 }
 
 .btnAction{
-    width: 100%;
-    max-width: 50px;
+    width: 50px;
+    height: 50px;
     margin: auto;
+}
+
+.deleteBtn{
+    background-image: url('../imgs/delete.svg');
+}
+.editBtn{
+    background-image: url('../imgs/upload.svg');
 }
 .post{
     border: #609 solid 1px;

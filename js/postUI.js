@@ -26,11 +26,15 @@ class PostUI {
         this.containerRow.classList.add('post','row');
         this.divCol1.className = 'col';
         this.divCol2.classList.add('col-2','btnPost');
+        this.editBtn.classList.add('btnAction', 'editBtn');
+        this.editBtn.setAttribute("id", "updateBtn");
+        this.deleteBtn.classList.add('btnAction', 'deleteBtn');
+
 
         if(this.post !== null) {
             this.titleTxt.innerText = this.post.title;
             this.bodyTxt.innerText = this.post.body;
-           this.timesT.innerText = this.post.owner + '-' + this.post.timestamp.getDate() + '/' + this.post.timestamp.getMonth() + '/' + this.post.timestamp.getYear();
+           this.timesT.innerText = this.post.owner + '-' + this.post.timestamp.getDate() + '/' + this.post.timestamp.getMonth() + '/' + this.post.timestamp.getFullYear();
         }
 
     

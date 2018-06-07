@@ -1,6 +1,5 @@
 class Post {
     constructor(fbkey, title, body, owner, timestamp){
-        console.log('OK2');
         this.fbkey = fbkey;
         this.title = title;
         this.body = body;
@@ -11,7 +10,5 @@ class Post {
         } else {
             this.timestamp = new Date(timestamp);
         }
-
-        console.log(this.timestamp);
     }
 }
