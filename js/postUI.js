@@ -23,6 +23,7 @@ class PostUI {
         this.containerRow.classList.add('post','row');
         this.divCol1.className = 'col';
         this.divCol2.classList.add('col-2','btnPost');
+        this.divCol2.id = this.post.fbkey;
 
         if(this.post !== null) {
             this.titleTxt.innerText = this.post.title;
@@ -40,9 +41,9 @@ class PostUI {
 
         
         this.editBtn.classList.add('btnAction', 'editBtn');
-        this.editBtn.id = this.post.fbkey;
+        this.editBtn.id = 'update';
         this.deleteBtn.classList.add('btnAction', 'deleteBtn');
-        this.deleteBtn.id = this.post.fbkey + 'delete';
+        this.deleteBtn.id = 'delete';
             
         }
 

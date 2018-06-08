@@ -97,24 +97,60 @@ function init() {
   };
 
 
-  function editablePost(ppostInfo){
-    
+  function updatePost(ppostInfo) {
+    console.log(ppostInfo.fbkey + ' ' + ppostInfo.owner);
     postBtn.hidden = true;
     updateBtn.hidden = false;
     cancelBtn.hidden = false;
 
-    titleTxt.value= ppostInfo.title;
-    bodyTxt.value= ppostInfo.body;
+    titleTxt.value = ppostInfo.title;
+    bodyTxt.value = ppostInfo.body;
+
+    
   }
   function updateBtnOnClick() {
 
-    console.log('Post Editado');
+    var request = new XMLHttpRequest();
+    request.open('PATCH', urlBase, true);
+    request.onreadystatechange = function(){
+      if (request.readyState === XMLHttpRequest.DONE){
+
+        var post = currentPostSelected;
+    post.title = titleTxt.value;
+    post.body = bodyTxt.value;
+    post.timestamp = new Date();
+
+    var fbkey = post.fbkey;
+    post.fbkey = null;
+    var postJson = '{' + JSON.stringify(fbkey) + ':' + JSON.stringify(post) + '}';
+
+    request.send(postJson);
+
+      }
+    }
+    request.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+
+    
+
 
     postBtn.hidden = false;
     updateBtn.hidden = true;
     cancelBtn.hidden = true;
 
   };
+
+  function updatePostCallback(event){
+    var request = event.target;
+
+    if (request.readyState === XMLHttpRequest.DONE) {
+      if (request.status === 200) {
+        requestAllPost();
+      } else {
+        console.log('Error on request', request.status);
+
+      }
+    }
+  }
 
   function cancelBtnOnClick() {
     console.log('Edicion Cancelada');
@@ -125,36 +161,58 @@ function init() {
 
   };
 
-  function deleteBtnOnClick(ppostInfo){
-    console.log(ppostInfo);
+  function deletePostCallback(event) {
+    var request = event.target;
 
-    
+    if (request.readyState === XMLHttpRequest.DONE) {
+      if (request.status === 200) {
+        requestAllPost();
+      } else {
+        console.log('Error on request', request.status);
+
+      }
+    }
   }
+
+  
+    function deleteBtnOnClick(ppostInfo) {
+      console.log(ppostInfo.fbkey);
+
+      if (confirm('Estas seguro de borrar este post')) {
+        var url = "https://theevilmouseblog.firebaseio.com/posts/" + ppostInfo.fbkey + ".json";
+        var request = new XMLHttpRequest();
+        request.open('DELETE', url, true);
+        request.onreadystatechange = deletePostCallback;
+        request.send();
+        //removeSelectedPostStyle();
+      }
+
+    };
 
 
 
   function selectPost(event) {
     currentPostSelected = getPostByFbKey(event.target);
 
-    if (currentPostSelected.fbkey === event.target.id) {
-      editablePost(currentPostSelected);
+    if (event.target.id === 'update') {
+      updatePost(currentPostSelected);
     } else {
-      deleteBtnOnClick(currentPostSelected);
+      if (event.target.id === 'delete') {
+        deleteBtnOnClick(currentPostSelected);
+      }
     }
 
-    
+
 
   };
 
   function getPostByFbKey(target) {
     var postSelected = null;
 
-    console.log(target.id);
-    
-
     for (var i = 0; i < posts.length; i++) {
-      if (posts[i].fbkey === target.id) {
+      if (posts[i].fbkey === target.parentElement.id) {
         postSelected = posts[i];
+        console.log(postSelected);
       }
     }
 
