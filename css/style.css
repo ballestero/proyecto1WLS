@@ -6,8 +6,8 @@ html, body {
 
 .postWindow{
     background: #f2f2f2;
-    height: 40em;
-    margin-top: 6em;
+    height: 39em;
+    margin-top: 1em;
     -webkit-box-shadow: 4px 4px 1px 0px rgba(0,0,0,0.1);
     box-shadow: 4px 4px 1px 0px rgba(0,0,0,0.1);
 

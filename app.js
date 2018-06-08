@@ -51,7 +51,7 @@ function init() {
         }
 
         var newPost = new Post(key, postData.title, postData.body, postData.owner, postData.timestamp);
-        var newPostUI = new PostUI(newPost);
+        var newPostUI = new PostUI(newPost, owner);
         posts.push(newPost);
 
 
@@ -66,23 +66,6 @@ function init() {
   function requestAllPost() {
 
   }
-
-  /*var getPost = new XMLHttpRequest();
-  getPost.onreadystatechange = function () {
-    if (this.readyState == 4 && this.status == 200) {
-      var request = JSON.parse(getPost.responseText);
-      console.log(request);
-      posts = request.posts;
-
-      for (var i = 0; i < posts.length; i++) {
-        var newPost = new Post(i, posts[i].title, posts[i].body, posts[i].owner, posts[i].timestamp);
-        var newPostUI = new PostUI(newPost);
-      }
-
-    }
-  };
-  getPost.open("GET", "js/posts.json", true);
-  getPost.send();*/
 
   function sendPostCallback(event) {
     var request = event.target;
@@ -143,7 +126,8 @@ function init() {
   };
 
   function deleteBtnOnClick(ppostInfo){
-    console.log('Eliminado');
+    console.log(ppostInfo);
+
     
   }
 
